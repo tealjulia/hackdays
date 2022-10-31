@@ -9,7 +9,13 @@
     "48": "/images/icon48.png",
     "128": "/images/icon128.png"
   },
-
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["./static/js/content.js"]
+    }
+  ],
+  "permissions": ["activeTab"],
   "action": {
     "default_icon": "logo192.png",
     "default_title": "Iron-Octavia",
