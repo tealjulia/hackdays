@@ -1,5 +1,4 @@
 import { Container } from "react-bootstrap";
-import "./App.css";
 import { SidePanel } from "./components/SidePanel";
 
 function App() {
