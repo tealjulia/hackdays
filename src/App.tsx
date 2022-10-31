@@ -6,6 +6,7 @@ import { SidePanel } from "./components/SidePanel";
 
 function App() {
   const [title, setTitle] = useState("");
+  const [user, setUser] = useState("");
   useEffect(() => {
     /**
      * We can't use "chrome.runtime.sendMessage" for sending messages from React.
@@ -30,11 +31,16 @@ function App() {
             { type: "GET_DOM" },
             (response) => {
               setTitle(response.title);
+              setUser(response.user);
             }
           );
         }
       );
   });
+
+  if (!user.includes("airbyte"))
+    return <Container>You don't work here!</Container>;
+
   return (
     <Container>
       <h1>{title}</h1>

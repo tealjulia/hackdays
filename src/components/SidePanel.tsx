@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { Container } from "react-bootstrap";
 import { useParseSourceData } from "../hooks/useSourceHook";
 import { ItemCard } from "./ItemCard";
@@ -31,7 +30,7 @@ export const SidePanel: React.FC = () => {
               type={entry.type}
             />
           );
-        })}{" "}
+        })}
       </>
     </Container>
   );

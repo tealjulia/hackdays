@@ -1,8 +1,7 @@
 import { Accordion, Card } from "react-bootstrap";
-import { GitHubCard, GitHubData } from "./GitHubCard";
+import { GitHubCard } from "./GitHubCard";
 import { ItemList } from "./ItemList";
 import { ItemTable } from "./ItemTable";
-import { Category } from "./SidePanel";
 
 interface ItemCardProps {
   categoryTitle: string;

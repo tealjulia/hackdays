@@ -8,6 +8,7 @@ const messagesFromReactAppListener = (msg, sender, sendResponse) => {
     headlines: Array.from(document.getElementsByTagName < "h1" > "h1").map(
       (h1) => h1.innerText
     ),
+    user: chrome.identity.getProfileUserInfo(),
   };
 
   console.log("[content.js]. Message response", response);

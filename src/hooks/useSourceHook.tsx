@@ -5,7 +5,9 @@ export const fetchData = async () => {
     `https://ironman-4200139641.us-east-1.bonsaisearch.net:443/airbyte_workspace/_doc/bd7f276c-fb96-46bf-8f3c-53d194add358`,
     {
       method: "GET",
-      headers: { Authorization: "Basic " + btoa() }, // copy and paste in user name and password
+      headers: {
+        Authorization: "Basic " + btoa(), // paste in creds inside these parentheses
+      },
     }
   ).then((res) => res.json());
 
