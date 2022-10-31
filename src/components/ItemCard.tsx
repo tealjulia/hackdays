@@ -1,15 +1,18 @@
 import { Accordion, Card } from "react-bootstrap";
+import { GitHubCard, GitHubData } from "./GitHubCard";
 import { ItemList } from "./ItemList";
 import { ItemTable } from "./ItemTable";
 import { Category } from "./SidePanel";
 
 interface ItemCardProps {
   categoryTitle: string;
-  category: Category;
+  data: any;
+  type: string;
 }
 export const ItemCard: React.FC<ItemCardProps> = ({
   categoryTitle,
-  category,
+  data,
+  type,
 }) => {
   return (
     <Card className="mt-4 bg-light">
@@ -20,20 +23,24 @@ export const ItemCard: React.FC<ItemCardProps> = ({
               <strong>{categoryTitle}</strong>
             </Accordion.Header>
             <Accordion.Body>
-              {Array.isArray(category.listItems) ? (
-                <ItemList items={category.listItems} />
+              {type === "github" ? (
+                <GitHubCard githubData={data} />
+              ) : Array.isArray(data.listItems) ? (
+                <ItemList items={data.listItems} />
               ) : (
-                <ItemTable items={category.listItems} />
+                <ItemTable items={data.listItems} />
               )}
-              <p>
-                <a
-                  href={category.seeMoreLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  See More...
-                </a>
-              </p>
+              {data.seeMoreLink && (
+                <p>
+                  <a
+                    href={data.seeMoreLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    See More...
+                  </a>
+                </p>
+              )}
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>

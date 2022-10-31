@@ -1,37 +1,58 @@
-import { Category } from "../components/SidePanel";
+import { useEffect, useState } from "react";
 
-type SidePanelData = Record<string, Category>;
+export const fetchData = async () => {
+  const apiData = await fetch(
+    `https://ironman-4200139641.us-east-1.bonsaisearch.net:443/airbyte_workspace/_doc/bd7f276c-fb96-46bf-8f3c-53d194add358`,
+    {
+      method: "GET",
+      headers: { Authorization: "Basic " + btoa() }, // copy and paste in user name and password
+    }
+  ).then((res) => res.json());
 
-export const useSourceHook = (): SidePanelData => {
-  return {
-    stuff: {
-      listItems: [
-        { title: "item1", link: "http://www.google.com/" },
-        { title: "item2", link: "http://www.reddit.com" },
-      ],
-      seeMoreLink: "http://www.google.com",
-    },
-    more_stuff: {
-      listItems: [
-        { title: "item1", link: "http://www.google.com/" },
-        { title: "item2", link: "http://www.reddit.com" },
-      ],
-      seeMoreLink: "http://www.google.com",
-    },
-    alottastuff: {
-      listItems: [
-        { title: "item1", link: "http://www.google.com/" },
-        { title: "item2", link: "http://www.reddit.com" },
-      ],
-      seeMoreLink: "http://www.google.com",
-    },
-    otherStuff: {
-      listItems: {
-        title: "message",
-        data: "what it's about",
-        ladedada: "more info",
-      },
-      seeMoreLink: "http://www.youtube.com",
-    },
+  return apiData;
+};
+
+export const useParseSourceData = () => {
+  const [data, setData] = useState<any>({});
+  const [loading, setLoading] = useState(true);
+  console.log("here");
+
+  const getData = async () => {
+    try {
+      const response = await fetchData();
+      setData(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  console.log({ data, loading });
+
+  const parsedGithubData = loading
+    ? {}
+    : data._source.issue_array.map((issue: any) => {
+        return {
+          title: issue.title,
+          id: issue.id,
+          state: issue.state,
+          url: issue.issue_url,
+          createdAt: issue.created_at,
+          affectedWorkspaces: issue.mentioned_workspace_ids,
+          lastActive: issue.comments_array
+            .map((comment: any) => {
+              return comment.created_at;
+            })
+            .sort((a: number, b: number) => b - a)[0],
+        };
+      });
+
+  const githubData = parsedGithubData || {};
+  const workspaceName = loading ? "" : data._source.workspace_name;
+  return { workspaceName, githubData, loading };
 };
